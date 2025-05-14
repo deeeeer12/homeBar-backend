@@ -6,9 +6,9 @@ import lombok.Data;
 @Data
 @TableName("carts")
 public class Cart {
-    private Long id;
-    private Long userId;
-    private Long dishId;
+    private Integer id;
+    private Integer userId;
+    private Integer dishId;
 //    private int quantity;
     // getters and setters
 }

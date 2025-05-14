@@ -13,8 +13,6 @@ public class User {
     private Long id;
     private String username;
     private String password;
-    private String nickname;
-    private String role;
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createdAt;
     @TableField(fill = FieldFill.UPDATE)
