@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    url: jdbc:mysql://10.0.0.10:3306/homeBar?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: Glu
+    password: Gl821552133
+  main:
+    allow-circular-references: true
+  jackson:
+    default-property-inclusion: non_empty #全局控制，过滤掉传给前端的null和空值
