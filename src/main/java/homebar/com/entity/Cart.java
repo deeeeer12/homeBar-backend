@@ -7,7 +7,8 @@ import lombok.Data;
 @TableName("carts")
 public class Cart {
     private Integer id;
-    private Integer userId;
+    private String dishName;
+    private String userId;
     private Integer dishId;
 //    private int quantity;
     // getters and setters

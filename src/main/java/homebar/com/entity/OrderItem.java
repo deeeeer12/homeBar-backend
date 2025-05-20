@@ -8,9 +8,9 @@ import java.math.BigDecimal;
 @Data
 @TableName("order_items")
 public class OrderItem {
-    private Long id;
-    private Long orderId;
-    private Long dishId;
-    private int quantity;
+    private Integer id;
+    private String dishName;
+    private Integer orderId;
+    private Integer dishId;
     // getters and setters
 }

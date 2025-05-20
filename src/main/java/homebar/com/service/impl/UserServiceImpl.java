@@ -18,8 +18,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public R login(User user) {
         LambdaQueryWrapper<User> userQw = new LambdaQueryWrapper<>();
-        userQw.eq(User::getUsername,user.getUsername())
-                .eq(User::getPassword,user.getPassword());
+        userQw.eq(User::getUsername,user.getUsername());
 
         User someone = userService.getOne(userQw);
         if (someone!=null){
@@ -27,5 +26,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }else {
             return R.error("登陆失败");
         }
+    }
+
+    @Override
+    public R getUserRole(String openId) {
+
+        User user = userService.getById(openId);
+        if (user == null){
+            return R.error("为查询到该用户：" + openId);
+        }
+
+        return R.success(user.getRole(),"查询用户角色成功");
     }
 }

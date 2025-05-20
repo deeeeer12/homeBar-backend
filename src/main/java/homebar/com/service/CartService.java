@@ -5,7 +5,9 @@ import homebar.com.common.R;
 import homebar.com.entity.Cart;
 
 public interface CartService extends IService<Cart> {
-    R addToCart(Integer userid, Integer dishid);
+    R addToCart(String openId, Integer dishId);
 
-    R getCartInfo(Integer userid);
+    R getCartInfo(String openId);
+
+    R delCartDish(String openId, Integer dishId);
 }

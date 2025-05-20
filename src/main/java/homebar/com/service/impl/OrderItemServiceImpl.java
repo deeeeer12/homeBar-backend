@@ -6,5 +6,5 @@ import homebar.com.mapper.OrderItemMapper;
 import org.springframework.stereotype.Service;
 
 @Service
-public class OrderItemService extends ServiceImpl<OrderItemMapper, OrderItem> implements homebar.com.service.OrderItemService {
+public class OrderItemServiceImpl extends ServiceImpl<OrderItemMapper, OrderItem> implements homebar.com.service.OrderItemService {
 }

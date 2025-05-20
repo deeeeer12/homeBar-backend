@@ -7,4 +7,5 @@ import homebar.com.entity.User;
 public interface UserService extends IService<User> {
     R login(User user);
 
+    R getUserRole(String openId);
 }

@@ -10,9 +10,10 @@ import java.time.LocalDateTime;
 @Data
 @TableName("users")
 public class User {
-    private Long id;
+    private String id;
     private String username;
-    private String password;
+    private String phone;
+    private String role;
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createdAt;
     @TableField(fill = FieldFill.UPDATE)

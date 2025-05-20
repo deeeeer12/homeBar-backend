@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Data
 @TableName("dishes")
 public class Dish {
-    private Long id;
+    private Integer id;
     private String name;
     private String category; //种类
     private String imageUrl;
