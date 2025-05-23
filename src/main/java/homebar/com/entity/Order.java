@@ -12,7 +12,7 @@ import java.util.List;
 @Data
 @TableName("orders")
 public class Order {
-    private Integer id;
+    private String id;
     private String userId;
     private String status;
     @TableField(fill = FieldFill.INSERT)

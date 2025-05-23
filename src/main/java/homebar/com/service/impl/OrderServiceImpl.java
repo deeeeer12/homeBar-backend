@@ -1,5 +1,6 @@
 package homebar.com.service.impl;
 
+import cn.hutool.core.util.IdUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -15,8 +16,14 @@ import homebar.com.service.DishService;
 import homebar.com.service.OrderItemService;
 import homebar.com.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -55,6 +62,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         Order order = new Order();
         order.setUserId(userid);
         order.setStatus("制作中");
+        String uuidOrder = IdUtil.randomUUID();
+        String subUuidOrder = uuidOrder.substring(uuidOrder.length() - 4).toUpperCase();
+        order.setId(subUuidOrder);
         order.setCreatedAt(LocalDateTime.now());
 
         //2.1保存order订单到order表中
@@ -64,11 +74,14 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         }
 
         //2.2获取刚创建的订单号
-        Integer orderId = order.getId();
+        String orderId = order.getId();
         //3.创建订单明细，并插入;
         for (Dish dish : dishList) {
             Integer dishId = dish.getId();
             OrderItem orderItem = new OrderItem();
+            String uuid = IdUtil.randomUUID();
+            String subUuid = uuid.substring(uuid.length() - 4).toUpperCase();
+            orderItem.setId(subUuid);
             orderItem.setOrderId(orderId);
             orderItem.setDishId(dishId);
             orderItem.setDishName(dish.getName());
@@ -86,6 +99,25 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             throw new BusinessException("清空购物车失败");
         }
 
+
+        //Server酱消息推送模板
+        String token = "SCT280516TDMnm4YlLzf0dOfh0FaTE6f7l"; // 你的 Server 酱 token
+        String url = "https://sctapi.ftqq.com/" + token + ".send";
+
+        String orderContent = "您有新的订单，请前往小程序确认！";
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("title", "📦 新订单提醒");
+        params.add("desp", orderContent); // 支持 Markdown
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(params, headers);
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.postForEntity(url, request, String.class);
+
+
+
         return R.success(dishList,"下单成功！");
 
     }
@@ -93,7 +125,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     @Override
     public R getOrder(String openId) {
         LambdaQueryWrapper<Order> orderLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        orderLambdaQueryWrapper.eq(Order::getUserId,openId);
+        orderLambdaQueryWrapper.eq(Order::getUserId,openId).orderByDesc(Order::getCreatedAt);
         //用户很可能有多个订单，不建议使用getOne
 //        Order order = orderService.getOne(orderLambdaQueryWrapper);
         List<Order> orders = orderMapper.selectList(orderLambdaQueryWrapper);

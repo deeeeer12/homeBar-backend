@@ -11,6 +11,7 @@ import homebar.com.service.OrderItemService;
 import homebar.com.service.OrderService;
 import homebar.com.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -34,7 +35,7 @@ public class AdminController {
     @GetMapping("/getAllOrders")
     public R getAllOrders(){
         LambdaQueryWrapper<Order> orderLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        orderLambdaQueryWrapper.orderByAsc(Order::getCreatedAt);
+        orderLambdaQueryWrapper.orderByDesc(Order::getCreatedAt);
         List<Order> orders = orderService.getBaseMapper().selectList(orderLambdaQueryWrapper);
 
         for (Order order : orders) {
@@ -69,11 +70,17 @@ public class AdminController {
         return R.success(null,"更新成功");
     }
 
+    @Transactional
     @DeleteMapping("/deleteOrder")
-    public R deleteOrder(Integer orderId) {
+    public R deleteOrder(String orderId) {
         boolean removed = orderService.removeById(orderId);
         if (removed) {
+            LambdaQueryWrapper<OrderItem> orderItemLambdaQueryWrapper = new LambdaQueryWrapper<>();
+            orderItemLambdaQueryWrapper.eq(OrderItem::getOrderId,orderId);
+            orderItemService.remove(orderItemLambdaQueryWrapper);
             return R.success(null,"订单删除成功");
+
+
         } else {
             return R.error("订单删除失败");
         }
