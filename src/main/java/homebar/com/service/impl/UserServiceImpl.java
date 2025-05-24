@@ -18,7 +18,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public R login(User user) {
         LambdaQueryWrapper<User> userQw = new LambdaQueryWrapper<>();
-        userQw.eq(User::getUsername,user.getUsername());
+        userQw.eq(User::getNickName,user.getNickName());
 
         User someone = userService.getOne(userQw);
         if (someone!=null){

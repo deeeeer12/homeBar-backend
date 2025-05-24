@@ -11,8 +11,9 @@ import java.time.LocalDateTime;
 @TableName("users")
 public class User {
     private String id;
-    private String username;
+    private String nickName;
     private String phone;
+    private String avatarUrl;
     private String role;
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createdAt;

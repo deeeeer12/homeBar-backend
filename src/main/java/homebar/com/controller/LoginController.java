@@ -2,6 +2,7 @@ package homebar.com.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import homebar.com.dto.userRegisterDTO;
 import homebar.com.entity.User;
 import homebar.com.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,7 +69,7 @@ public class LoginController {
             // 返回 token 给前端
             Map<String, String> result = new HashMap<>();
             result.put("status", "200");
-            result.put("msg", "用户："+user.getUsername()+"登录成功");
+            result.put("msg", "用户："+user.getNickName()+"登录成功");
             result.put("token", token);
             result.put("openid", openid);
             return ResponseEntity.ok(result);
@@ -84,18 +85,18 @@ public class LoginController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody User newUser){
+    public ResponseEntity<?> register(@RequestBody userRegisterDTO newUser){
         //前端传openid和username等信息
 
         //判断是否存在
         LambdaQueryWrapper<User> query = new LambdaQueryWrapper<>();
-        query.eq(User::getId, newUser.getId());
+        query.eq(User::getId, newUser.getOpenId());
         User exist = userService.getOne(query);
         if (exist != null) {
             return ResponseEntity.badRequest().body("用户已存在");
         }
 
-        System.out.println(newUser.getUsername());
+        newUser.setId(newUser.getOpenId());
         userService.save(newUser);
 
         // 注册成功后可以直接返回登录的token，或者提示注册成功

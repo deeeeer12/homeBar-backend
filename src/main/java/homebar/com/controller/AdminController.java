@@ -49,7 +49,7 @@ public class AdminController {
 
             //根据openId查询用户名userName
             User user = userService.getById(order.getUserId());
-            order.setUserName(user.getUsername());
+            order.setUserName(user.getNickName());
         }
         return  R.success(orders,"查询所有订单成功");
     }
