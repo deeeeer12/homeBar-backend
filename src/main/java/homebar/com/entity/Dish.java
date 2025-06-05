@@ -17,6 +17,7 @@ public class Dish {
     private String category; //种类
     private String imageUrl;
     private String description;
+    private Integer type; // 1，经典 2，Jay 3,JJ 4，陶喆 5，网红
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createdAt;
     @TableField(fill = FieldFill.UPDATE)

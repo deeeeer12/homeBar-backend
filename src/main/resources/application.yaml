@@ -1,23 +1,23 @@
 spring:
   datasource:
-    url: jdbc:mysql://10.0.0.10:3306/homeBar?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
-#    url: jdbc:mysql://140.143.122.234:3306/homeBar?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+#    url: jdbc:mysql://10.0.0.10:3306/homeBar?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://140.143.122.234:3306/homeBar?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
     username: Glu
     password: Gl821552133
   main:
     allow-circular-references: true
   jackson:
     default-property-inclusion: non_empty #全局控制，过滤掉传给前端的null和空值
-  redis:
-    host: 10.0.0.20
-    port: 6380
-    password: Gl821552133  # 如果没有密码可以省略
-    timeout: 3000
 #  redis:
-#    host: 140.143.122.234
-#    port: 6379
-##    password:   # 如果没有密码可以省略
+#    host: 10.0.0.20
+#    port: 6380
+#    password: Gl821552133  # 如果没有密码可以省略
 #    timeout: 3000
+  redis:
+    host: 140.143.122.234
+    port: 6379
+#    password:   # 如果没有密码可以省略
+    timeout: 3000
 
 #用于打印框架生成的sql语句，便于调试
 mybatis-plus:

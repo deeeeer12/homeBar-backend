@@ -61,6 +61,7 @@ public class CartServiceImpl extends ServiceImpl<CartMapper, Cart> implements Ca
 
         if (dishid != null) {
             cart.setDishId(dishid);
+            cart.setUserId(openid);
         } else {
             return R.error("菜品id为空，请确认");
         }
